@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Form Processor</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Yin Chen yc153" />
+  </head>
+  <body>
+    <h1>Form Processor</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>
+            <span><b>Key</b></span>
+          </th>
+          <th>
+            <span><b>Value</b></span>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td><label>Account Name: </label></td>
+          <td><label id="accName"></label></td>
+        </tr>
+        <tr>
+          <td><label>Display Name: </label></td>
+          <td><label id="disName"></label></td>
+        </tr>
+        <tr>
+          <td><label>Email Address: </label></td>
+          <td><label id="email"></label></td>
+        </tr>
+        <tr>
+          <td><label>Phone Number: </label></td>
+          <td><label id="phone"></label></td>
+        </tr>
+        <tr>
+          <td><label>Date of Birth: </label></td>
+          <td><label id="dob"></label></td>
+        </tr>
+        <tr>
+          <td><label>Zipcode: </label></td>
+          <td><label id="zipCode"></label></td>
+        </tr>
+        <tr>
+          <td><label>Password: </label></td>
+          <td><label id="password1"></label></td>
+        </tr>
+        <tr>
+          <td><label>Timestamp: </label></td>
+          <td><label id="timeStamp"></label></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+  <script>
+    const url = window.location.href;
+
+    console.log(`url = ${url}`);
+
+    params = new URL(url).searchParams;
+
+    // Extract query parameter from location and display key-value pairs in a two-column table
+    document.getElementById("accName").innerHTML = params.get("accName");
+    document.getElementById("disName").innerHTML = params.get("disName");
+    document.getElementById("phone").innerHTML = params.get("phone");
+    document.getElementById("dob").innerHTML = params.get("dob");
+    document.getElementById("zipCode").innerHTML = params.get("zipCode");
+    document.getElementById("email").innerHTML = params.get("email");
+    
+    function showPasswordInStar(){
+        let password = params.get("password1");
+
+        // Use reg makes password turn into all stars
+        let starPassword = password.replace(/./g,"*")
+        console.log(starPassword);
+        return starPassword;
+    }
+    document.getElementById("password1").innerHTML = showPasswordInStar();
+
+    // Hidden timestamp is rendered as human readable datetime
+    function formatTimeStamp(time){
+        let year = time.getFullYear();
+        let month = time.getMonth() + 1;
+        let day = time.getDate();
+        let hr = time.getHours();
+        let min = time.getMinutes();
+        let sec = time.getSeconds();
+        return `${year}/${month}/${day}    ${hr}:${min}:${sec}`;
+
+    }
+    
+    let timeStamp = new Date(Number(params.get("timeStamp")));
+    document.getElementById("timeStamp").innerHTML = formatTimeStamp(timeStamp);
+
+    
+  </script>
+</html>

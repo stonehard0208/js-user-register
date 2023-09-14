@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+    <head>
+        <title>Register</title>
+        <meta charset="utf-8" />
+        <meta name = "author" content="Yin Chen yc153">
+    </head>
+    <script type="text/javascript">
+        //  Hidden field contains the current timestamp in millis when the page is loaded
+        function setTimeStamp(){
+            document.getElementById("timeStamp").value = Date.now();
+            console.log("set time");
+        }
+        window.onload = function(){
+            setTimeStamp();
+        }
+        
+        function getTime() {
+            return Date.now();
+        }
+        
+        
+        // Only users aged 18 or older on the date of registration are valid
+        function isAdult(){
+            let dateOfBirth = document.getElementById("dob").value;
+            console.log(dateOfBirth);
+            let currentTime = new Date();
+
+            let birthYear = document.getElementById("dob").value.split("-")[0];
+            let birthMonth = document.getElementById("dob").value.split("-")[1];
+            let birthDate = document.getElementById("dob").value.split("-")[2];
+
+            console.log(birthYear);
+            console.log(birthMonth);
+            console.log(birthDate);
+            
+            console.log(currentTime.getMonth());
+            console.log(currentTime.getDate());
+            console.log(birthDate);
+
+
+
+
+            let age = currentTime.getFullYear() - birthYear;
+            
+            // console.log(birthYear);
+            // console.log(age);
+
+            if (currentTime.getMonth() + 1 < birthMonth || (currentTime.getMonth() + 1 == birthMonth && currentTime.getDate() < birthDate)) {
+                age -= 1;
+            }
+
+            console.log(age);
+
+            return age >= 18;
+        }
+
+        // Validate password
+        function isPasswordEqual(){
+            let pw1 = document.getElementById("password1").value;
+            let pw2 = document.getElementById("password2").value;
+            
+            return pw1 === pw2;
+
+        }
+
+        
+        // Helpful alert to user of invalid form contents
+        // Submit button executes JavaScript validation function before submitting form
+        function submitForm(){
+            
+            if (!isAdult()) {
+                alert("User must be 18 years or older to register");
+                return false;
+            }
+            if (!isPasswordEqual()) {
+                alert("Confirmation password does not match the input password");
+                return false;
+            }
+        
+            return true;
+
+            
+        }
+
+    </script>
+    <body>
+        
+        <h1>Registration</h1>
+        <form id = "register" method = "GET" action = "./formProcessor.html" name = "form">
+            <!-- <form id = "register" method = "GET" action = "./formProcessor.html" name = "form" onsubmit="return submitForm()"> -->
+        
+            <p>
+                Account Name: <br>
+                <input type = "text" placeholder = "your name" id = "accName" name = "accName" pattern="[a-zA-Z][a-zA-Z0-9]*" title="Account name can only be upper or lower case letters and numbers, but may not start with a number. " required>
+            </p>
+            <p>
+                Display Name(optional): <br>
+                <input type = "text" placeholder = "your name" id = "disName" name = "disName">
+            </p>
+            <p>
+                Email Address: <br>
+                <input type = "email" placeholder = "email address" id = "email" name = "email" required>
+            </p>
+            <p>
+                Phone Number: 123-123-1234 <br>
+                <input type = "text" placeholder = "123-123-1234" id = "phone" name = "phone" required pattern="^\d{3}-\d{3}-\d{4}$" title="Format is xxx-xxx-xxxx">
+            </p>
+            <p>
+                Date of Birth: <br>
+                <input type = "date" id = "dob" name = "dob" required>
+            </p>
+            <p>
+                Zipcode: <br>
+                <input type = "text" placeholder = "77005" id = "zipCode" name = "zipCode" required pattern="[0-9]{5}" title="Format is 5 digit numbers">
+            </p>
+            <p>
+                Password: <br>
+                <input type = "password" id = "password1" name="password1" required>
+            </p>
+            <p>
+                Password Confirmation: <br>
+                <input type = "password" id = "password2" required>
+            </p>
+            
+            <input type = "hidden" name="timeStamp" id="timeStamp">
+            
+            <input value= "Register" onclick="isAdult()">
+            <input type = "reset" value = "Clear">
+        </form>
+       
+    </body>
+    
+    
+</html>
